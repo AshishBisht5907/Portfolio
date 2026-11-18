@@ -1,80 +1,153 @@
-# Ashish Bisht — Developer Portfolio
+# ✦ ASHISH BISHT
 
-A responsive React + Vite portfolio for Home, About, Projects, Hobbies and Contact, with an owner-managed photography gallery and private visitor-submission queue.
+<p align="center">
+  <img src="https://img.shields.io/badge/FULL%20STACK-DEVELOPER-FFC900?style=for-the-badge&labelColor=08090B" />
+  <img src="https://img.shields.io/badge/CREATIVE-CODER-F5F3EF?style=for-the-badge&labelColor=292C32" />
+</p>
 
-## Run locally
+<h3 align="center">Building ideas into digital experiences.</h3>
+
+<p align="center">
+  Computer Science Engineering Student · Full Stack Developer
+  <br/>
+  Passionate about building modern web applications and solving real-world problems through code.
+</p>
+
+<p align="center">
+  <a href="https://github.com/AshishBisht5907">GitHub</a> &nbsp; ✦ &nbsp;
+  <a href="https://github.com/AshishBisht5907/LifeLink-Healthcare">LifeLink</a> &nbsp; ✦ &nbsp;
+  <a href="#featured-projects">Projects</a>
+</p>
+
+---
+
+## ◈ ABOUT THE PROJECT
+
+This repository contains my personal developer portfolio — a place to showcase my work, technical skills, projects and creative interests.
+
+Designed with a minimal dark aesthetic, golden accents and interactive animations to create a distinctive experience.
+
+## ✦ WHAT'S INSIDE
+
+| | Feature | |
+|:---:|---|:---:|
+| ✦ | Modern multi-page portfolio | ✓ |
+| ◈ | Interactive animations and transitions | ✓ |
+| ▣ | Responsive desktop and mobile layout | ✓ |
+| ⌘ | Dedicated project showcase | ✓ |
+| ◎ | Photography gallery with filters and lightbox | ✓ |
+| 🔒 | Private photo submissions and owner approval | ✓ |
+
+## ⚡ TECHNOLOGIES
+
+<p align="center">
+  <img src="https://skillicons.dev/icons?i=react,vite,js,html,css,python,django,postgres,supabase,git,github" />
+</p>
+
+## ◈ FEATURED PROJECTS
+
+### 01 / LifeLink
+
+**Hospital Management & Healthcare Coordination System**
+
+A full-stack healthcare platform focused on connecting patients, families and hospital staff through a centralized system.
+
+`Python` `Django REST Framework` `PostgreSQL` `Next.js` `React` `TypeScript`
+
+[↗ Explore LifeLink Repository](https://github.com/AshishBisht5907/LifeLink-Healthcare)
+
+---
+
+### 02 / Urban Crate
+
+**E-Commerce Web Application**
+
+A web-based shopping application developed with Django, focused on delivering a structured online shopping experience.
+
+`Python` `Django`
+
+[↗ Explore GitHub](https://github.com/AshishBisht5907)
+
+---
+
+## ◎ PHOTOGRAPHY & CREATIVE WORK
+
+Beyond development, this portfolio includes a personal photography gallery.
+
+- Explore published photographs.
+- Browse images through categories and a lightbox.
+- Submit photographs for owner review.
+- Owner-controlled publishing and gallery management.
+
+## ⌘ RUN LOCALLY
+
+Get the project running on your machine:
+
+**1. Clone**
+
+```bash
+git clone https://github.com/AshishBisht5907/ashish-bisht-portfolio.git
+cd ashish-bisht-portfolio
+```
+
+**2. Install dependencies**
 
 ```bash
 npm install
+```
+
+**3. Configure environment**
+
+```bash
 cp .env.example .env.local
+```
+
+**4. Start development server**
+
+```bash
 npm run dev
 ```
 
-Open the URL Vite prints (usually `http://localhost:5173`). Update `.env.local` as needed, then restart Vite. LinkedIn, Instagram and X are omitted until their profile URLs are supplied. The contact form opens the visitor's email application; it does not send or store messages on a server.
+Open `http://localhost:5173`.
 
-Without Supabase configuration, the portfolio and public pages still work, but photo submissions and gallery management are disabled. The gallery does not fall back to public local uploads: without a trusted backend, it cannot securely enforce owner-only publishing or private visitor submissions.
+## 🔐 GALLERY CONFIGURATION
 
-## Secure photo gallery setup (Supabase)
+Supabase is used for authentication, database operations and photo storage.
 
-The public Hobbies page reads only approved rows. Visitor uploads go into a private bucket and a `pending` queue; they are not publicly readable. Only an authenticated user with the server-managed `app_metadata.gallery_admin = true` claim can view submissions, publish, edit or delete gallery content. RLS and Storage policies enforce this even if someone bypasses the interface.
+Before enabling gallery uploads:
 
-1. Create a Supabase project. In **SQL Editor**, run [`supabase/schema.sql`](./supabase/schema.sql). It creates constrained gallery/submission tables, review-to-photo and reviewer relationships, queue/gallery indexes, RLS policies and two **private** buckets:
-   - `portfolio-gallery` — only images referenced by approved public rows can be read by visitors.
-   - `photo-submissions` — visitor uploads are private; only the gallery administrator can read them.
+1. Create a Supabase project.
+2. Run `supabase/schema.sql` in the SQL Editor.
+3. Configure email authentication and owner permissions.
+4. Add the required environment variables.
+5. Verify visitor submissions and owner moderation.
 
-   Both buckets limit files to 12 MiB and allow only JPEG, PNG and WebP.
-2. In **Authentication → Providers**, enable email sign-in. Disable public sign-ups. Invite Ashish's existing account from **Authentication → Users**; do not make an open sign-up form.
-3. Assign the owner-only role in the SQL Editor, substituting the invited administrator's email:
+**Security:** Row Level Security and private storage policies are designed to protect gallery operations. Live Supabase verification is pending project configuration.
 
-   ```sql
-   update auth.users
-   set raw_app_meta_data =
-     coalesce(raw_app_meta_data, '{}'::jsonb) || '{"gallery_admin": true}'::jsonb
-   where email = 'owner@example.com';
-   ```
-
-   `app_metadata` is server-controlled; do not use `user_metadata` for this permission. Sign out and sign in again after changing the claim so the new JWT includes it.
-4. In **Authentication → URL Configuration**, set the site URL and allow these redirect URLs:
-   - `http://localhost:5173/admin/gallery`
-   - `https://YOUR-DOMAIN/admin/gallery`
-5. Copy `.env.example` to `.env.local` and set:
-
-   ```dotenv
-   VITE_SUPABASE_URL=https://YOUR-PROJECT.supabase.co
-   VITE_SUPABASE_ANON_KEY=YOUR_PUBLIC_ANON_OR_PUBLISHABLE_KEY
-   VITE_SUPABASE_GALLERY_BUCKET=portfolio-gallery
-   VITE_SUPABASE_SUBMISSIONS_BUCKET=photo-submissions
-   ```
-
-   The anon/publishable key is intended for browser use and is protected by RLS. **Never** add a `service_role`, secret, or database password to a `VITE_` variable or commit it to source control.
-6. Visit `/admin/gallery`, request a sign-in link using the invited account, and manage photos from the private dashboard. Visitors can submit photos on `/hobbies`; each remains private until you explicitly approve it.
-
-The schema policies permit anonymous photo-submission inserts only in the pending bucket and pending table state. Visitors cannot read, modify, approve, or delete submissions. The public gallery bucket is private; its read policy is limited to object paths in `gallery_photos`. Approval uses a database transaction to change the queue status and insert the public gallery row together, so a failed approval remains private. To disable or change gallery access, update the RLS policies and owner claim in Supabase, not just the React UI.
-
-### Permission checks after setup
-
-Use an incognito browser for visitor checks and the invited account for owner checks. Also test via Supabase's REST and Storage endpoints using only the public anon key:
-
-1. Anonymous `GET /rest/v1/gallery_photos` returns approved rows; `GET /rest/v1/photo_submissions` is denied, and anonymous `POST`, `PATCH` or `DELETE` against `gallery_photos` is denied.
-2. A visitor can upload only a supported image under `pending/` and create a pending submission. They cannot read that row or fetch its private object, even when they know its path.
-3. The visitor submission appears in the owner's pending queue, not the public gallery. The owner can approve or reject it; only approval adds its image to the public gallery.
-4. Anonymous uploads, updates and deletes in `portfolio-gallery` are denied. Reads of gallery objects succeed only for paths referenced by approved gallery rows. Non-admin authenticated users must receive the same denials.
-5. Only the invited owner can sign into `/admin/gallery`, view pending records, edit/publish/delete gallery photos, and create signed URLs for pending objects. Approved photos remain available after reload; rejected and pending photos remain private.
-
-No Supabase project credentials are included in this repository, so these live RLS checks must be run against your configured project. The portfolio UI being hidden is not a substitute for these direct API checks.
-
-## Build and preview
+## 🚀 BUILD & DEPLOY
 
 ```bash
 npm run build
-npm run preview
 ```
 
-The production files are generated in `dist/`.
+Deploy the project through [Vercel](https://vercel.com/).
 
-## Deploy to Vercel
+| Setting | Configuration |
+|---|---|
+| Framework | Vite |
+| Build Command | `npm run build` |
+| Output Directory | `dist` |
 
-1. Push the project to GitHub and import it at [vercel.com/new](https://vercel.com/new).
-2. Choose **Vite**; use `npm run build` as the build command and `dist` as the output directory.
-3. Add the same public `VITE_` profile/Supabase variables under **Project Settings → Environment Variables**. Do not configure a service-role key.
-4. Add the deployed `/admin/gallery` URL to Supabase's allowed redirect URLs, then deploy. The included `vercel.json` rewrites direct page requests to the React app.
+---
+
+<p align="center">
+  <img src="https://img.shields.io/badge/BUILT%20WITH-CURIOSITY-FFC900?style=for-the-badge&labelColor=08090B" />
+  <br/><br/>
+  <strong>ASHISH BISHT</strong>
+  <br/>
+  <sub>Code. Create. Keep Building.</sub>
+  <br/><br/>
+  <a href="https://github.com/AshishBisht5907">
+    <img src="https://img.shields.io/badge/CONNECT%20WITH%20ME-08090B?style=for-the-badge&logo=github&logoColor=FFC900" />
+  </a>
+</p>
