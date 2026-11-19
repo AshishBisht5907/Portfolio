@@ -1,3 +1,4 @@
+import { photos } from "../data/photography";
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Camera, ImagePlus, Send, X } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -36,6 +37,16 @@ function GalleryImage({ image, onOpen }) {
 
 export default function HobbiesPage() {
   const [images, setImages] = useState([]);
+
+  const personalImages = photos.map((photo, index) => ({
+  id: `personal-${index}`,
+  imageUrl: photo,
+  title: `Photograph ${index + 1}`,
+  category: "Photography",
+  description: "Captured by Ashish",
+}));
+
+
   const [isLoading, setIsLoading] = useState(true);
   const [loadError, setLoadError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -95,9 +106,11 @@ export default function HobbiesPage() {
     if (!lightboxImage && dialog.open) dialog.close();
   }, [lightboxImage]);
 
-  const visibleImages = selectedCategory === 'All'
-    ? images
-    : images.filter((image) => image.category === selectedCategory);
+  const allImages = [...personalImages, ...images];
+
+const visibleImages = selectedCategory === 'All'
+  ? allImages
+  : allImages.filter((image) => image.category === selectedCategory);
   const availableCategories = [
     'All',
     ...new Set([...categories, ...images.map((image) => image.category)]),
@@ -187,7 +200,9 @@ export default function HobbiesPage() {
             <span className="section-index">THE GALLERY</span>
             <h2>Collected <span className="gradient-text">moments.</span></h2>
           </div>
-          <span className="gallery-count">{images.length} {images.length === 1 ? 'photo' : 'photos'}</span>
+          <span className="gallery-count">
+            {allImages.length} {allImages.length === 1 ? 'photo' : 'photos'}
+          </span>
         </div>
 
         <div className="gallery-filters" aria-label="Filter photos by category">
