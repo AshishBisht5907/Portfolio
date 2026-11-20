@@ -2,7 +2,6 @@ export const photos = [
   "/images/photography/1.jpeg",
   "/images/photography/2.jpeg",
   "/images/photography/3.jpeg",
-  "/images/photography/4.jpeg",
   "/images/photography/5.jpeg",
   "/images/photography/6.jpeg",
   "/images/photography/7.jpeg",
