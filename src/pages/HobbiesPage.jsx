@@ -28,7 +28,7 @@ function GalleryImage({ image, onOpen }) {
       </button>
       <div className="gallery-card-copy">
         <span className="gallery-category">{image.category}</span>
-        <h2>{image.title}</h2>
+        
         {image.description && <p>{image.description}</p>}
       </div>
     </article>

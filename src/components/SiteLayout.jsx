@@ -34,8 +34,8 @@ export default function SiteLayout({ children }) {
       <a className="skip-link" href="#main-content">Skip to content</a>
       <header className="topbar">
         <Link className="brand" to="/" aria-label={`${profile.name} home`}>
-          <span className="brand-mark">A.</span>
-          <span>ASHISH<span className="brand-dot">.</span></span>
+          <span className="brand-mark">A</span>
+          <span>ASHISH<span className="brand-dot"> BISHT</span></span>
         </Link>
         <nav
           id="primary-navigation"
